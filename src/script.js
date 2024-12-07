@@ -16,53 +16,33 @@ document.querySelectorAll('.btn').forEach(button => {
 window.addEventListener('scroll', () => {
     const header = document.querySelector('.header');
     if (header) {
-        header.classList.toggle('sticky', window.scrollY > 100);
+        header.classList.toggle('sticky', window.scrollY > 100); // Toggle sticky class when scrolled more than 100px
     }
 });
 
-// Dark mode toggle functionality
+// Dark mode toggle functionality with persistence
 const toggleButton = document.querySelector('.toggle');
 const root = document.documentElement;
 
+// Check and apply dark mode based on localStorage on page load
+if (localStorage.getItem('dark-mode') === 'enabled') {
+    root.classList.add('dark-mode');
+    toggleButton.innerHTML = '<i class="bx bx-sun"></i>'; // Light mode icon
+} else {
+    root.classList.remove('dark-mode');
+    toggleButton.innerHTML = '<i class="bx bx-moon"></i>'; // Dark mode icon
+}
+
 toggleButton.addEventListener('click', () => {
-    root.classList.toggle('dark-mode'); // Toggle dark mode class on <html>
-    toggleButton.innerHTML = root.classList.contains('dark-mode')
-        ? '<i class="bx bx-sun"></i>' // Light mode icon
-        : '<i class="bx bx-moon"></i>'; // Dark mode icon
-});
-
-// Animate progress bars when the skills section comes into view
-document.addEventListener('scroll', () => {
-    const skillsSection = document.querySelector('.skills');
-    const progressBars = document.querySelectorAll('.bar span');
-
-    if (skillsSection) {
-        const sectionPosition = skillsSection.getBoundingClientRect().top;
-        const screenHeight = window.innerHeight;
-
-        // Check if the skills section is in view
-        if (sectionPosition < screenHeight) {
-            progressBars.forEach(bar => {
-                const progress = bar.getAttribute('data-progress');
-                if (!bar.style.width || bar.style.width === '0px') {
-                    bar.style.width = progress; // Animate width to the desired percentage
-                }
-            });
-        }
-    }
-});
-
-// Optional: Reset progress bars when scrolling out of view
-document.addEventListener('scroll', () => {
-    const skillsSection = document.querySelector('.skills');
-    const progressBars = document.querySelectorAll('.bar span');
-
-    if (skillsSection) {
-        const sectionBottom = skillsSection.getBoundingClientRect().bottom;
-        if (sectionBottom < 0 || sectionBottom > window.innerHeight) {
-            progressBars.forEach(bar => {
-                bar.style.width = '0'; // Reset progress bar
-            });
-        }
+    const isDarkMode = root.classList.contains('dark-mode');
+    // Toggle dark mode class on <html>
+    if (isDarkMode) {
+        root.classList.remove('dark-mode');
+        toggleButton.innerHTML = '<i class="bx bx-moon"></i>'; // Dark mode icon
+        localStorage.setItem('dark-mode', 'disabled'); // Store dark mode state
+    } else {
+        root.classList.add('dark-mode');
+        toggleButton.innerHTML = '<i class="bx bx-sun"></i>'; // Light mode icon
+        localStorage.setItem('dark-mode', 'enabled'); // Store dark mode state
     }
 });
