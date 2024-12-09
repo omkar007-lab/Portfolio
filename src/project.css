@@ -294,7 +294,7 @@ body {
     font-weight: 500;
     border-radius: 2rem;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    margin-top: 5rem;
+    margin-top: 3rem;
 }
 
 .btn:hover {
